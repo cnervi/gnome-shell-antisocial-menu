@@ -2,6 +2,6 @@
     "uuid": "antisocial-menu@cnervi.github.com",
     "name": "Antisocial Menu",
     "description": "Removes the social elements of the user menu including status icon, status chooser, notification switch and online accounts",
-    "url": "http://cnervi.github.com",
+    "url": "http://github.com/cnervi/gnome-shell-antisocial-menu",
     "shell-version": ["3.4"]
 }
