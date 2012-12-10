@@ -1,9 +1,13 @@
-const UserMenu = imports.ui.main.panel._statusArea.userMenu;
+const Panel = imports.ui.main.panel;
 
-let actors = [UserMenu._iconBox, UserMenu._statusChooser.actor, UserMenu._notificationsSwitch.actor];
+let actors, userMenu;
 
 function init() {
-    let menuItems = UserMenu.menu._getMenuItems();
+    let statusArea = Panel.statusArea || Panel._statusArea;
+    userMenu = statusArea.userMenu; 
+    actors = [userMenu._iconBox, userMenu._statusChooser.actor, userMenu._notificationsSwitch.actor];
+
+    let menuItems = userMenu.menu._getMenuItems();
 
     menuItems.forEach(function(menuItem) {
         let label = menuItem.actor._delegate.label;
