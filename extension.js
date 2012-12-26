@@ -1,7 +1,7 @@
 const St = imports.gi.St;
 const Panel = imports.ui.main.panel;
 
-const ShowName = false;
+const ShowName = true;
 
 let icon, actors, userMenu, panelUserMenu;
 
@@ -11,9 +11,8 @@ function init() {
     panelUserMenu = userMenu._iconBox.get_parent();
     actors = [userMenu._iconBox, userMenu._statusChooser.actor, userMenu._notificationsSwitch.actor];
     icon = new St.Icon({icon_name: 'system-shutdown', style_class: 'system-status-icon'});
-    let menuItems = userMenu.menu._getMenuItems();
 
-    menuItems.forEach(function(menuItem) {
+    userMenu.menu._getMenuItems().forEach(function(menuItem) {
         let label = menuItem.actor._delegate.label;
 
         if(label && _(label.get_text()) == _('Online Accounts'))
