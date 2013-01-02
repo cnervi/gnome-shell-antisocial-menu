@@ -1,15 +1,18 @@
-FILES	= extension.js metadata.json 
+FILES	= src/extension.js src/metadata.json 
 UUID	= antisocial-menu@cnervi.github.com
+ZIP	= $(UUID).zip
 
-.PHONY	: all clean install zip
 
 all	: install
 
 clean	:
-	$(RM) $(UUID).zip
+	$(RM) $(ZIP)
 
-install	: zip
-	unzip -o -d ~/.local/share/gnome-shell/extensions/$(UUID) $(UUID).zip
+install	: $(ZIP)
+	unzip -o -d ~/.local/share/gnome-shell/extensions/$(UUID) $<
 
-zip	: $(FILES)
-	zip -j $(UUID).zip $(FILES)
+$(ZIP)	: $(FILES)
+	zip -j $@ $^
+
+
+.PHONY	: all clean install
