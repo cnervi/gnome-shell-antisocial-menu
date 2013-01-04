@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.antisocial-menu" path="/org/gnome/shell/extensions/antisocial-menu/">
+    <key name="show-name" type="b">
+      <default>true</default>
+      <summary>Whether to show username or the quit button</summary>
+      <description>
+        Set to "true" to show only the username. Set to "false" to show only the shutdown icon.
+      </description>
+    </key>
+  </schema>
+</schemalist>

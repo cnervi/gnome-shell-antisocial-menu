@@ -1,18 +1,31 @@
-FILES	= src/extension.js src/metadata.json 
+FILES	= extension.js convenience.js prefs.js metadata.json schemas/gschemas.compiled
 UUID	= antisocial-menu@cnervi.github.com
 ZIP	= $(UUID).zip
 
+.PHONY: all clean install
 
-all	: install
+all: $(ZIP)
 
-clean	:
-	$(RM) $(ZIP)
+clean:
+	$(RM) -r $(ZIP) build/
 
-install	: $(ZIP)
+install: $(ZIP)
 	unzip -o -d ~/.local/share/gnome-shell/extensions/$(UUID) $<
 
-$(ZIP)	: $(FILES)
-	zip -j $@ $^
+$(ZIP): $(addprefix build/, $(FILES))
+	cd build/; zip ../$@ $(FILES)
 
+build/:
+	mkdir -p $@
 
-.PHONY	: all clean install
+build/schemas/:
+	mkdir -p $@
+
+build/%.js: src/%.js build/
+	cp -u $< $@
+
+build/%.json: src/%.json build/
+	cp -u $< $@
+
+build/%.compiled: src/*.gschema.xml build/schemas/
+	glib-compile-schemas --strict --targetdir=$(dir $@) $(dir $<)

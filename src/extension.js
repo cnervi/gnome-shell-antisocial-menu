@@ -1,16 +1,24 @@
 const St = imports.gi.St;
-const Panel = imports.ui.main.panel;
 
-const ShowName = true;
+const Main = imports.ui.main;
 
-let icon, actors, userMenu, panelUserMenu;
+const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
+const Convenience = Me.imports.convenience;
+
+const SETTINGS_SHOW_NAME = 'show-name';
+
+let settings, userMenu, panelUserMenu, actors, icon, id;
 
 function init() {
-    let statusArea = Panel.statusArea || Panel._statusArea;
+    settings = Convenience.getSettings();
+
+    let statusArea = Main.panel.statusArea || Main.panel._statusArea;
+
     userMenu = statusArea.userMenu; 
     panelUserMenu = userMenu._iconBox.get_parent();
     actors = [userMenu._iconBox, userMenu._statusChooser.actor, userMenu._notificationsSwitch.actor];
-    icon = new St.Icon({icon_name: 'system-shutdown', style_class: 'system-status-icon'});
+    icon = new St.Icon({icon_name: 'system-shutdown-symbolic', style_class: 'system-status-icon'});
 
     userMenu.menu._getMenuItems().forEach(function(menuItem) {
         let label = menuItem.actor._delegate.label;
@@ -21,7 +29,9 @@ function init() {
 }
 
 function enable() {
-    if(!ShowName) {
+    let showName = settings.get_boolean(SETTINGS_SHOW_NAME);
+
+    if(!showName) {
         userMenu._name.hide()
         panelUserMenu.insert_child_at_index(icon, -1);
     }
@@ -29,15 +39,20 @@ function enable() {
     actors.forEach(function(actor) {
         actor.hide();
     });
+
+    id = settings.connect('changed::' + SETTINGS_SHOW_NAME, function() {
+        disable();
+        enable();
+    });
 }
 
 function disable() {
-    if(!ShowName) {
-        userMenu._name.show()
-        panelUserMenu.remove_child(icon);
-    }
+    userMenu._name.show()
+    panelUserMenu.remove_child(icon);
 
     actors.forEach(function(actor) {
         actor.show();
     });
+
+    settings.disconnect(id);
 }
