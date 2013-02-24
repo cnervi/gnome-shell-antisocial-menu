@@ -14,8 +14,6 @@ function init() {
 }
 
 function buildPrefsWidget() {
-    let showName = settings.get_boolean(SETTINGS_SHOW_NAME);
-
     let frame = new Gtk.Box({orientation: Gtk.Orientation.VERTICAL, border_width: 10});
     let label = new Gtk.Label({label: "<b>Appearance</b>", use_markup: true, xalign: 0});
     frame.add(label);
