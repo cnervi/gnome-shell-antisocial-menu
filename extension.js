@@ -32,12 +32,20 @@ const AntisocialMenuExtension = new Lang.Class({
         else
             UserMenu._statusChooser._combo.actor.hide();
 
-        UserMenu._iconBox.hide();
+        this.fixIconBox();
         UserMenu._notificationsSwitch.actor.hide();
 
         this.hid = this.settings.connect('changed', Lang.bind(this, function() {
             ExtensionSystem.reloadExtension(ExtensionUtils.extensions[Me.metadata['uuid']]);
         }));
+
+        this.sid = Main.screenShield.connect('locked-changed',
+            Lang.bind(this, this.fixIconBox) );
+    },
+
+    fixIconBox: function() {
+        if (!Main.sessionMode.isLocked)
+            UserMenu._iconBox.hide();
     },
 
     disable: function() {
@@ -51,6 +59,7 @@ const AntisocialMenuExtension = new Lang.Class({
         UserMenu._notificationsSwitch.actor.show();
 
         this.settings.disconnect(this.hid);
+        Main.screenShield.disconnect(this.sid);
     },
 });
 
